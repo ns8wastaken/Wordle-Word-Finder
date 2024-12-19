@@ -86,6 +86,10 @@ async function getAnswers() {
     })
 
     correctLetters.forEach(data => {
+        possibleAnswers = possibleAnswers.union(wordsByLetter[data[0]]);
+    })
+
+    correctLetters.forEach(data => {
         possibleAnswers = possibleAnswers.intersection(wordsByIndex[data[0]][data[1]]);
     })
 
@@ -97,9 +101,16 @@ async function getAnswers() {
         return new Set(b).size - new Set(a).size;
     });
 
-    document.getElementById("word-list").textContent = sortedAnswers.join("\n");
+    const wordList = document.getElementById("word-list");
+    wordList.innerHTML = "";
 
-    return sortedAnswers;
+    // Add the new words
+    sortedAnswers.forEach(word => {
+        const wordElement = document.createElement("span");
+        wordElement.className = "word";
+        wordElement.textContent = word;
+        wordList.appendChild(wordElement);
+    });
 }
 
 

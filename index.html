@@ -47,18 +47,19 @@
                 <input type="text" class="letter-input" maxlength="1">
                 <input type="text" class="letter-input" maxlength="1">
             </fieldset>
+
+            <div class="center-div">
+                <input value="Search Words" type="button" id="answer-button">
+            </div>
         </div>
 
-        <div class="center-div">
-            <fieldset class="word-list-fieldset">
-                <legend class="word-list-legend">List of Possible Words</legend>
-                <pre id="word-list"></pre>
-            </fieldset>
-        </div>
     </div>
 
     <div class="center-div">
-        <input value="Search Words" type="button" id="answer-button">
+        <fieldset class="word-list-fieldset">
+            <legend class="word-list-legend">List of Possible Words</legend>
+            <div id="word-list"></div>
+        </fieldset>
     </div>
 
     <script src="js/input_functions.js"></script>
