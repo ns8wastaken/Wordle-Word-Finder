@@ -9,39 +9,44 @@
 </head>
 
 <body>
-    <div class="input-container-div">
-        <fieldset class="input-container-fieldset" id="correct">
-            <legend class="input-container-legend" id="correct">Correct</legend>
+    <div class="container-div">
+        <object data="data.txt" type="text/plain" width="600" height="400">
+            Your browser does not support this feature.
+        </object>
 
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-        </fieldset>
+        <div class="center-div">
+            <fieldset class="input-container-fieldset" id="correct">
+                <legend class="input-container-legend" id="correct">Correct</legend>
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+            </fieldset>
 
-        <fieldset class="input-container-fieldset" id="included">
-            <legend class="input-container-legend" id="included">Included</legend>
+            <fieldset class="input-container-fieldset" id="included">
+                <legend class="input-container-legend" id="included">Included</legend>
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+            </fieldset>
 
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-        </fieldset>
-
-        <fieldset class="input-container-fieldset" id="excluded">
-            <legend class="input-container-legend" id="excluded">Excluded</legend>
-
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-            <input type="text" id="letter" maxlength="1">
-        </fieldset>
+            <fieldset class="input-container-fieldset" id="excluded">
+                <legend class="input-container-legend" id="excluded">Excluded</legend>
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+            </fieldset>
+        </div>
     </div>
 
-    <input type="button">
+    <div class="center-div">
+        <input value="Search Words" type="button" id="answer-button">
+    </div>
 
     <script src="js/input_functions.js"></script>
     <script src="js/word_finder.js"></script>
