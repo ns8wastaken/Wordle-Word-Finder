@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Wordle Word Finder</title>
+</head>
+
+<body>
+    <div class="input-container-div">
+        <fieldset class="input-container-fieldset" id="correct">
+            <legend class="input-container-legend" id="correct">Correct</legend>
+
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+        </fieldset>
+
+        <fieldset class="input-container-fieldset" id="included">
+            <legend class="input-container-legend" id="included">Included</legend>
+
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+        </fieldset>
+
+        <fieldset class="input-container-fieldset" id="excluded">
+            <legend class="input-container-legend" id="excluded">Excluded</legend>
+
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+            <input type="text" id="letter" maxlength="1">
+        </fieldset>
+    </div>
+
+    <input type="button">
+
+    <script src="js/input_functions.js"></script>
+    <script src="js/word_finder.js"></script>
+</body>
+
+</html>
