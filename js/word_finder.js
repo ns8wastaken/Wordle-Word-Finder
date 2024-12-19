@@ -1,11 +1,108 @@
-const answerButtonInput = document.getElementById("answer-button")
-
 function getLetters() {
-    const inputs = document.querySelectorAll(".input-container-fieldset#correct input");
+    const inputsCorrect = document.querySelectorAll("#correct input");
 
-    inputs.forEach((input, index) => {
-        console.log(`Index: ${index}, Text: ${input.value}`);
+    let correctLetters = [];
+
+    inputsCorrect.forEach((input, index) => {
+        input.value = input.value.toUpperCase();
+        if (input.value !== "") {
+            correctLetters.push([input.value, index]);
+        }
     });
+
+
+    const inputsValid = document.querySelectorAll("#valid input");
+
+    let validLetters = [];
+
+    inputsValid.forEach(input => {
+        input.value = input.value.toUpperCase();
+        if (input.value !== "") {
+            validLetters.push(input.value);
+        }
+    });
+
+
+    const inputsInvalid = document.querySelectorAll("#invalid input");
+
+    let invalidLetters = [];
+
+    inputsInvalid.forEach(input => {
+        input.value = input.value.toUpperCase();
+        if (input.value !== "") {
+            invalidLetters.push(input.value);
+        }
+    });
+
+    return [correctLetters, validLetters, invalidLetters];
 }
 
-answerButtonInput.addEventListener("click", getLetters)
+async function getWordSets() {
+    try {
+        const response = await fetch("../data.txt"); // Adjust path as needed
+        const data = await response.text();
+        const allWords = data.split("\n").map(word => word.trim());
+
+        const wordsByLetter = {};
+        const wordsByIndex = {};
+
+        // Populate dictionaries
+        for (let i = 65; i <= 90; i++) {
+            const letter = String.fromCharCode(i);
+            wordsByLetter[letter] = new Set();
+            wordsByIndex[letter] = [];
+        }
+
+        allWords.forEach(word => {
+            [...word].forEach((char, index) => {
+                // Add word to wordsByLetter
+                wordsByLetter[char].add(word);
+
+                // Ensure wordsByIndex has enough sub-arrays for this index
+                while (wordsByIndex[char].length <= index) {
+                    wordsByIndex[char].push(new Set());
+                }
+
+                wordsByIndex[char][index].add(word);
+            });
+        });
+
+        return [wordsByLetter, wordsByIndex];
+    }
+    catch (err) {
+        console.error("Error loading file:", err);
+        return [Map(), Map()];
+    }
+}
+
+async function getAnswers() {
+    const [correctLetters, validLetters, invalidLetters] = getLetters();
+    const [wordsByLetter, wordsByIndex] = await getWordSets();
+
+    possibleAnswers = new Set();
+
+    validLetters.forEach(c => {
+        possibleAnswers = possibleAnswers.union(wordsByLetter[c]);
+    })
+
+    correctLetters.forEach(data => {
+        possibleAnswers = possibleAnswers.intersection(wordsByIndex[data[0]][data[1]]);
+    })
+
+    invalidLetters.forEach(c => {
+        possibleAnswers = possibleAnswers.difference(wordsByLetter[c]);
+    })
+
+    const sortedAnswers = Array.from(possibleAnswers).sort((a, b) => {
+        return new Set(b).size - new Set(a).size;
+    });
+
+    document.getElementById("word-list").textContent = sortedAnswers.join("\n");
+
+    return sortedAnswers;
+}
+
+
+const answerButtonInput = document.getElementById("answer-button")
+
+answerButtonInput.addEventListener("click", getAnswers)

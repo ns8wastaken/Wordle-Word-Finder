@@ -1,24 +1,114 @@
 body {
-    font-family: "Fira Code";
+    font-family: "Times New Roman";
 }
 
-.container-div {
+.wrapper {
     display: flex;
-
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: space-around;
 }
 
 .center-div {
     display: grid;
     place-items: center;
-    /* display: flex;
-    flex-direction: column; */
+    display: flex;
+    flex-direction: column;
 
-    padding-bottom: 50px;
+    padding-bottom: 20px;
 }
 
 .input-container-fieldset {
+    border: 8px solid #000000;
+    border-radius: 20px;
+
+    padding: 10px;
+    margin: 10px;
+
+    display: grid;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    min-width: 0;
+    width: 460px;
+
+    gap: 10px;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.input-container-legend {
+    font-size: 20px;
+
+    border: 4px solid #000000;
+    border-radius: 8px;
+    background-color: white;
+    font-weight: bold;
+
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#correct {
+    border-color: rgb(0, 255, 0);
+}
+
+#valid {
+    border-color: rgb(236, 236, 0);
+}
+
+#invalid {
+    border-color: rgb(255, 0, 0);
+}
+
+input {
+    font-family: "Times New Roman";
+
+    border: 3px solid #000000;
+    border-radius: 10px;
+}
+
+.letter-input {
+    width: 50px;
+    height: 50px;
+    font-size: 35px;
+    text-align: center;
+
+    transition: background-color 250ms;
+
+    color: transparent;
+    text-shadow: 0px 0px 0px #070707;
+
+    /* Shows uppercase letter but actual value is lowercase */
+    text-transform: uppercase;
+}
+
+.letter-input::selection {
+    background: transparent;
+}
+
+.letter-input:focus {
+    outline: transparent;
+    background-color: #d4d4d4;
+}
+
+#answer-button {
+    width: 300px;
+    height: 100px;
+
+    font-size: 30px;
+
+    transition: background-color 50ms;
+
+    border-color: #00b600;
+    background-color: #00ee00;
+}
+
+#answer-button:active {
+    background-color: #00c000;
+}
+
+.word-list-fieldset {
     border: 8px solid #000000;
     border-radius: 20px;
 
@@ -35,16 +125,12 @@ body {
 
     min-width: 0;
     transition: width 300ms;
-    width: 460px;
+    width: auto;
 
     gap: 10px;
 }
 
-.input-container-fieldset:focus-within {
-    width: 600px;
-}
-
-.input-container-legend {
+.word-list-legend {
     border: 4px solid #000000;
     border-radius: 8px;
     background-color: white;
@@ -55,61 +141,11 @@ body {
     padding-right: 5px;
 }
 
-#correct {
-    border-color: rgb(0, 255, 0);
-}
-
-#included {
-    border-color: rgb(255, 255, 0);
-}
-
-#excluded {
-    border-color: rgb(255, 0, 0);
-}
-
-input {
-    font-family: "Fira Code";
-
-    border: 4px solid #000000;
-    border-radius: 12px;
-}
-
-.letter-input {
-    width: 100px;
-    height: 100px;
-
-    transition: background-color 250ms;
-
-    color: transparent;
-    text-shadow: 0px 0px 1px #070707;
-
-    font-size: 60px;
-    text-align: center;
-
-    /* Shows uppercase letter but actual value is lowercase */
-    text-transform: uppercase;
-}
-
-.letter-input::selection {
-    background: transparent;
-}
-
-.letter-input:focus {
-    outline: transparent;
-    /* border: 4px solid rgb(20, 0, 201); */
-    background-color: #d4d4d4;
-}
-
-#answer-button {
-    width: 300px;
-    height: 100px;
-
-    transition: background-color 250ms;
-
-    border-color: #00c400;
-    background-color: #00df00;
-}
-
-#answer-button:active {
-    background-color: #00d100;
+#word-list {
+    font-family: "Times New Roman";
+    font-size: 7px;
+    white-space: pre-wrap;
+    column-count: 36;
+    width: fit-content;
+    height: 600px;
 }

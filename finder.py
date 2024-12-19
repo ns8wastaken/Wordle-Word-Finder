@@ -16,23 +16,19 @@ for word in allWords:
 
         wordsByIndex[c][i].add(word)
 
-correctLetters  = [('N', 3), ('O', 1), ('I', 2), ('T', 4)]
-includedLetters = "NO"
-excludedLetters = "CRAEFUDJ"
+correctLetters = [('E', 4)] # (char, index)
+validLetters = "C"
+invalidLetters = ""
 
 possibleAnswers = set()
 
-for c in includedLetters:
+for c in validLetters:
     possibleAnswers |= wordsByLetter[c]
 
 for c, i in correctLetters:
     possibleAnswers &= wordsByIndex[c][i]
 
-for c in excludedLetters:
+for c in invalidLetters:
     possibleAnswers = possibleAnswers.difference(wordsByLetter[c])
 
-print(list(sorted(
-    possibleAnswers,
-    key=lambda x: len(set(x)),
-    reverse=True
-)))
+print(list(sorted(possibleAnswers, key=lambda x: len(set(x)), reverse=True)))
