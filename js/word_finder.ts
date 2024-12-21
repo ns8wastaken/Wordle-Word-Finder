@@ -1,37 +1,38 @@
 function getLetters() {
     const inputsCorrect = document.querySelectorAll("#correct input");
 
-    let correctLetters = [];
+    let correctLetters: Array<[string, number]> = [];
 
     inputsCorrect.forEach((input, index) => {
-        input.value = input.value.toUpperCase();
-        if (input.value !== "") {
-            correctLetters.push([input.value, index]);
-        }
+        console.log(input.nodeValue);
+        // input.value = input.value.toUpperCase();
+        // if (input.value !== "") {
+        //     correctLetters.push([input.value, index]);
+        // }
     });
 
 
     const inputsValid = document.querySelectorAll("#valid input");
 
-    let validLetters = [];
+    let validLetters: Array<[string, number]> = [];
 
-    inputsValid.forEach(input => {
-        input.value = input.value.toUpperCase();
-        if (input.value !== "") {
-            validLetters.push(input.value);
-        }
+    inputsValid.forEach((input, index) => {
+        // input.value = input.value.toUpperCase();
+        // if (input.value !== "") {
+        //     validLetters.push([input.value, index]);
+        // }
     });
 
 
     const inputsInvalid = document.querySelectorAll("#invalid input");
 
-    let invalidLetters = [];
+    let invalidLetters: Array<string> = [];
 
     inputsInvalid.forEach(input => {
-        input.value = input.value.toUpperCase();
-        if (input.value !== "") {
-            invalidLetters.push(input.value);
-        }
+        // input.value = input.value.toUpperCase();
+        // if (input.value !== "") {
+        //     invalidLetters.push(input.value);
+        // }
     });
 
     return [correctLetters, validLetters, invalidLetters];
@@ -43,8 +44,8 @@ async function getWordSets() {
         const data = await response.text();
         const allWords = data.split("\n").map(word => word.trim());
 
-        const wordsByLetter = {};
-        const wordsByIndex = {};
+        const wordsByLetter: Map<string, number> = new Map();
+        const wordsByIndex: Map<string, Array<number>> = new Map();
 
         // Populate dictionaries
         for (let i = 65; i <= 90; i++) {
@@ -71,20 +72,26 @@ async function getWordSets() {
     }
     catch (err) {
         console.error("Error loading file:", err);
-        return [Map(), Map()];
+        return [new Map(), new Map()];
     }
 }
 
 async function getAnswers() {
-    const [correctLetters, validLetters, invalidLetters] = getLetters();
-    const [wordsByLetter, wordsByIndex] = await getWordSets();
+    let [correctLetters, validLetters, invalidLetters] = getLetters();
+    let [wordsByLetter, wordsByIndex] = await getWordSets();
 
-    possibleAnswers = new Set();
+    if (validLetters.length == 0) {
+        validLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    }
 
-    validLetters.forEach(c => {
-        possibleAnswers = possibleAnswers.union(wordsByLetter[c]);
+    let possibleAnswers: Set<string> = new Set();
+
+    // validLetters.forEach(data => {
+    //     possibleAnswers = possibleAnswers.union(wordsByLetter[data[0]].difference(wordsByIndex[data[0]][data[1] % 5]));
+    // })
+    validLetters.forEach(data => {
+        possibleAnswers = possibleAnswers.union(wordsByLetter[data[0]]);
     })
-
     correctLetters.forEach(data => {
         possibleAnswers = possibleAnswers.union(wordsByLetter[data[0]]);
     })

@@ -16,9 +16,12 @@ for word in allWords:
 
         wordsByIndex[c][i].add(word)
 
-correctLetters = [('E', 4)] # (char, index)
-validLetters = "C"
+correctLetters = [('C', 0), ('H', 1), ('I', 2)] # (char, index)
+validLetters = ""
 invalidLetters = ""
+
+if len(validLetters) == 0:
+    validLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 possibleAnswers = set()
 
