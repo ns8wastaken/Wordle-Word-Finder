@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Wordle Word Finder</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="center-div">
+            <fieldset class="input-container-fieldset" id="correct">
+                <legend class="input-container-legend" id="correct">Correct</legend>
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+            </fieldset>
+
+            <div id="valid-container">
+                <fieldset class="input-container-fieldset" id="valid">
+                    <legend class="input-container-legend" id="valid">Valid</legend>
+                    <input type="text" class="letter-input" maxlength="1">
+                    <input type="text" class="letter-input" maxlength="1">
+                    <input type="text" class="letter-input" maxlength="1">
+                    <input type="text" class="letter-input" maxlength="1">
+                    <input type="text" class="letter-input" maxlength="1">
+                    <input type="button" value="+" id="add-valid-row">
+                    <input type="button" value="-" id="remove-valid-row">
+                </fieldset>
+            </div>
+
+            <fieldset class="input-container-fieldset" id="invalid">
+                <legend class="input-container-legend" id="invalid">Invalid</legend>
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="text" class="letter-input" maxlength="1">
+                <input type="button" value="+" id="add-invalid-row">
+                <input type="button" value="-" id="remove-invalid-row">
+            </fieldset>
+
+            <input value="Search Words" type="button" id="answer-button">
+        </div>
+
+        <fieldset class="word-list-fieldset">
+            <legend class="word-list-legend">List of Possible Words</legend>
+            <div id="word-list"></div>
+        </fieldset>
+    </div>
+
+    <script type="module" src="./js/all_words.js"></script>
+    <script src="./js/input_functions.js"></script>
+    <script type="module" src="./js/word_search.js"></script>
+    <script type="module" src="./js/set_word_list.js"></script>
+    <script src="./js/add_valid_row.js"></script>
+    <script src="./js/add_invalid_row.js"></script>
+</body>
+
+</html>

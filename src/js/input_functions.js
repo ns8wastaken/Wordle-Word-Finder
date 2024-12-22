@@ -1,5 +1,5 @@
-const inputs = document.querySelectorAll(".input-container-fieldset input");
-
+"use strict";
+const inputs = document.querySelectorAll(".input-container-fieldset input[type=\"text\"]");
 // Ddd event listeners to all inputs inside "input-container-fieldset"
 inputs.forEach((input, index) => {
     // Increment focused input index (letter entered)
@@ -8,53 +8,48 @@ inputs.forEach((input, index) => {
         if (input.value.length === input.maxLength) {
             if (inputs[index + 1]) {
                 inputs[index + 1].focus();
+                inputs[index + 1].select();
             }
         }
     });
-
     // Movement keys (backspace, up, down, left, right)
-    input.addEventListener("keydown", (e) => {
-        if (e.key === "Backspace" && input.value === "") {
-            e.preventDefault();
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Backspace" && input.value === "") {
+            event.preventDefault();
             if (inputs[index - 1]) {
                 inputs[index - 1].focus();
                 inputs[index - 1].select();
             }
         }
-
-        else if (e.key === "ArrowLeft") {
-            e.preventDefault();
+        else if (event.key === "ArrowLeft") {
+            event.preventDefault();
             if (inputs[index - 1]) {
                 inputs[index - 1].focus();
                 inputs[index - 1].select();
             }
         }
-
-        else if (e.key === "ArrowRight") {
-            e.preventDefault();
+        else if (event.key === "ArrowRight") {
+            event.preventDefault();
             if (inputs[index + 1]) {
                 inputs[index + 1].focus();
                 inputs[index + 1].select();
             }
         }
-
-        else if (e.key === "ArrowUp") {
-            e.preventDefault();
+        else if (event.key === "ArrowUp") {
+            event.preventDefault();
             if (inputs[index - 5]) {
                 inputs[index - 5].focus();
                 inputs[index - 5].select();
             }
         }
-
-        else if (e.key === "ArrowDown") {
-            e.preventDefault();
+        else if (event.key === "ArrowDown") {
+            event.preventDefault();
             if (inputs[index + 5]) {
                 inputs[index + 5].focus();
                 inputs[index + 5].select();
             }
         }
     });
-
     // Selects text in input on focus
     input.addEventListener("focus", () => {
         input.select();

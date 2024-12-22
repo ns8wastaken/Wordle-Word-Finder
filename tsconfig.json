@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "lib": [ "ES2023", "DOM" ],
+        "module": "ES2022",
+        "moduleResolution": "node",
+
+        "outDir": "./src/js",
+        "pretty": true,
+
+        "esModuleInterop": true,
+
+        "strict": true
+    },
+
+    "include": [ "./src/ts" ],
+    "exclude": [ "./src/ts/all_words.ts" ]
+}
