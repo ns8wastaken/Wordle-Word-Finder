@@ -1,4 +1,5 @@
 import { allWords } from "./all_words.js";
+import { allAnswers } from "./all_answers.js";
 
 function getLetters(): [Array<[string, number]>, Array<[string, number]>, Array<string>] {
     const inputsCorrect = document.querySelectorAll<HTMLInputElement>("#correct input[type=\"text\"]");
@@ -45,7 +46,7 @@ function getAnswers() {
     let answers: Array<string> = [];
 
     // Filter words
-    for (const word of allWords) {
+    for (const word of ((document.getElementById("use-valid-words")! as HTMLInputElement).checked ? allAnswers : allWords)) {
         let good = true;
 
         for (const char of invalidLetters) {

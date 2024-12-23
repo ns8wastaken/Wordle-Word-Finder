@@ -1,4 +1,5 @@
 import { allWords } from "./all_words.js";
+import { allAnswers } from "./all_answers.js";
 function getLetters() {
     const inputsCorrect = document.querySelectorAll("#correct input[type=\"text\"]");
     let correctLetters = [];
@@ -30,7 +31,7 @@ function getAnswers() {
     const [correctLetters, validLetters, invalidLetters] = getLetters();
     let answers = [];
     // Filter words
-    for (const word of allWords) {
+    for (const word of (document.getElementById("use-valid-words").checked ? allAnswers : allWords)) {
         let good = true;
         for (const char of invalidLetters) {
             if (word.includes(char)) {

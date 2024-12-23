@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./styles.css">
 
     <title>Wordle Word Finder</title>
 </head>
@@ -11,6 +11,14 @@
 <body>
     <div class="wrapper">
         <div class="center-div">
+            <section id="use-valid-words-container">
+                <label>Use only valid words</label>
+                <label class="switch">
+                    <input type="checkbox" id="use-valid-words">
+                    <span class="slider"></span>
+                </label>
+            </section>
+
             <fieldset class="input-container-fieldset" id="correct">
                 <legend class="input-container-legend" id="correct">Correct</legend>
                 <input type="text" class="letter-input" maxlength="1">
@@ -53,10 +61,9 @@
         </fieldset>
     </div>
 
-    <script type="module" src="./js/all_words.js"></script>
     <script src="./js/input_functions.js"></script>
-    <script type="module" src="./js/word_search.js"></script>
     <script type="module" src="./js/set_word_list.js"></script>
+    <script type="module" src="./js/word_search.js"></script>
     <script src="./js/add_valid_row.js"></script>
     <script src="./js/add_invalid_row.js"></script>
 </body>

@@ -1,5 +1,6 @@
 # How to get SSL certificate and key
 Simply run `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem`
+
 This will create a key.pem and cert.pem file which will be used by the `https_server.py` program.
 
 # How to start the server
