@@ -1,3 +1,4 @@
+/* General text and layout */
 body {
     font-family: "Times New Roman";
 }
@@ -9,78 +10,86 @@ body {
 }
 
 .center-div {
-    display: grid;
-    place-items: center;
     display: flex;
     flex-direction: column;
-
-
-    
+    align-items: center;
     padding-bottom: 20px;
 }
+
+/* ------------------------------
+   FIELDSETS
+------------------------------ */
 
 .input-container-fieldset {
     border: 8px solid #000000;
     border-radius: 20px;
-
     padding: 10px;
     margin: 5px;
 
-    display: grid;
-    justify-items: center;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    align-content: center;
+    gap: 10px;
 
     min-width: 0;
     width: 460px;
-
-    gap: 10px;
-    grid-template-columns: repeat(5, 1fr);
 }
 
 .input-container-legend {
     font-size: 20px;
+    font-weight: bold;
 
     border: 4px solid #000000;
     border-radius: 8px;
     background-color: white;
-    font-weight: bold;
 
-    padding: 2px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 2px 5px;
 }
 
-#correct {
+/* Each row of letters */
+.letter-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-items: center;
+    gap: 10px;
+}
+
+/* + / - buttons */
+.row-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#add-row,
+#remove-row {
+    font-size: 2.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    cursor: pointer;
+}
+
+/* Distinct border colors */
+#correct-fieldset {
     border-color: rgb(0, 255, 0);
 }
 
-#valid {
+#valid-fieldset {
     border-color: rgb(236, 236, 0);
 }
 
-#invalid {
+#invalid-fieldset {
     border-color: rgb(255, 0, 0);
 }
 
+/* ------------------------------
+   LETTER INPUTS
+------------------------------ */
+
 input {
     font-family: "Times New Roman";
-
     border: 3px solid #000000;
     border-radius: 10px;
-}
-
-#add-valid-row,
-#add-invalid-row,
-#remove-valid-row,
-#remove-invalid-row {
-    font-size: 2.5rem;
-
-    width: 3.5rem;
-    height: 3.5rem;
-
-    cursor: pointer;
 }
 
 .letter-input {
@@ -90,13 +99,11 @@ input {
     text-align: center;
 
     transition: background-color 250ms;
-
     color: transparent;
     text-shadow: 0px 0px 0px #070707;
 
     /* Shows uppercase letter but actual value is lowercase */
     text-transform: uppercase;
-
     cursor: pointer;
 }
 
@@ -109,23 +116,33 @@ input {
     background-color: #d4d4d4;
 }
 
-#answer-button {
+/* ------------------------------
+   BUTTONS
+------------------------------ */
+
+#search-button {
     width: 20vw;
     height: 10vh;
 
     font-size: 2vw;
 
-    border-color: #00b600;
+    border: 3px solid #00b600;
     background-color: #00ee00;
+    border-radius: 12px;
+    font-weight: bold;
 }
 
-#answer-button:hover {
+#search-button:hover {
     cursor: pointer;
 }
 
-#answer-button:active {
+#search-button:active {
     background-color: #00c000;
 }
+
+/* ------------------------------
+   WORD LIST
+------------------------------ */
 
 .word-list-fieldset {
     border: 8px solid #000000;
@@ -135,11 +152,8 @@ input {
     margin: 10px;
 
     display: flex;
-    /* Centers the items horizontally */
     justify-content: center;
-    /* Centers the items vertically */
     align-items: center;
-
     min-width: 0;
 }
 
@@ -149,12 +163,9 @@ input {
 
     border: 4px solid #000000;
     border-radius: 8px;
-
     background-color: white;
 
-    padding: 2px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 2px 5px;
 }
 
 #word-list {
@@ -163,6 +174,7 @@ input {
 
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 
     max-width: 60vw;
     gap: 10px;
@@ -175,19 +187,44 @@ input {
     border-radius: 5px;
 }
 
-.switch {
-    position: relative;
-    width: 55px;
-    height: 30px;
+/* ------------------------------
+   USE VALID WORDS SWITCH
+------------------------------ */
+
+#use-valid-words-container {
+    border: #000000 solid 3px;
+    border-radius: 0.5em;
+
+    padding: 5px;
+    gap: 10px;
+
+    font-size: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* include borders in sizing math */
+.switch, .slider, .slider:before {
+    box-sizing: border-box;
+}
+
+/* Switch track container */
+.switch {
+    position: relative;
+    width: 1.8em;
+    height: 1em;
+}
+
+/* Hide checkbox input */
 .switch input {
     display: none;
 }
 
 /* Slider background */
 .slider {
-    border: #000000 solid 3px;
+    border: #000000 solid 2px;
     position: absolute;
     cursor: pointer;
 
@@ -206,11 +243,10 @@ input {
 .slider:before {
     border: #000000 solid 1px;
     position: absolute;
-
     content: "";
 
     height: calc(100% - 4px);
-    width: calc(100% / (55 / 30) - 4px);
+    width: calc(50% - 4px);
 
     top: 50%;
     left: 2px;
@@ -221,25 +257,11 @@ input {
     border-radius: 50%;
 }
 
-input:checked+.slider {
+/* Checked state */
+input:checked + .slider {
     background-color: #4caf50;
 }
 
-input:checked+.slider:before {
-    transform: translate(calc(90% - 2px), -50%);
-}
-
-#use-valid-words-container {
-    border: #000000 solid 3px;
-
-    padding: 5px;
-    gap: 10px;
-
-    font-size: 20px;
-
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    align-content: center;
-    justify-content: center;
+input:checked + .slider:before {
+    transform: translate(calc(100% + 4px), -50%);
 }
