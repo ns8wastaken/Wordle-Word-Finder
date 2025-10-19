@@ -1,115 +1,96 @@
 import { allWords } from "./all_words.js";
 import { allAnswers } from "./all_answers.js";
 
-function getLetters(): [Array<[string, number]>, Array<[string, number]>, Array<string>] {
-    const inputsCorrect = document.querySelectorAll<HTMLInputElement>("#correct input[type=\"text\"]");
+type LetterIndex = [string, number];
 
-    let correctLetters: Array<[string, number]> = [];
-
-    inputsCorrect.forEach((input: HTMLInputElement, index: number) => {
-        input.value = input.value.toUpperCase();
-        if (input.value !== "") {
-            correctLetters.push([input.value, index]);
-        }
-    });
-
-
-    const inputsValid = document.querySelectorAll<HTMLInputElement>("#valid input[type=\"text\"]");
-
-    let validLetters: Array<[string, number]> = [];
-
-    inputsValid.forEach((input: HTMLInputElement, index: number) => {
-        input.value = input.value.toUpperCase();
-        if (input.value !== "") {
-            validLetters.push([input.value, index]);
-        }
-    });
-
-
-    const inputsInvalid = document.querySelectorAll<HTMLInputElement>("#invalid input[type=\"text\"]");
-
-    let invalidLetters: Array<string> = [];
-
-    inputsInvalid.forEach((input: HTMLInputElement) => {
-        input.value = input.value.toUpperCase();
-        if (input.value !== "") {
-            invalidLetters.push(input.value);
-        }
-    });
-
-    return [correctLetters, validLetters, invalidLetters];
+// --- Helper: get all inputs inside a fieldset's .letter-row ---
+function getInputsFromFieldset(fieldsetId: string): HTMLInputElement[] {
+    const fieldset = document.getElementById(fieldsetId);
+    if (!fieldset) return [];
+    const row = fieldset.querySelector<HTMLDivElement>(".letter-row");
+    if (!row) return [];
+    return Array.from(row.querySelectorAll<HTMLInputElement>("input.letter-input"));
 }
 
-function getAnswers() {
-    const [correctLetters, validLetters, invalidLetters] = getLetters();
+// --- Extract letters from inputs ---
+function extractLetters(inputs: HTMLInputElement[], includeIndex = true): LetterIndex[] | string[] {
+    const results: LetterIndex[] | string[] = [];
 
-    let answers: Array<string> = [];
+    inputs.forEach((input, index) => {
+        const value = input.value.toUpperCase();
+        input.value = value; // normalize input
+        if (!value) return;
 
-    // Filter words
-    for (const word of ((document.getElementById("use-valid-words")! as HTMLInputElement).checked ? allAnswers : allWords)) {
-        let good = true;
-
-        for (const char of invalidLetters) {
-            if (word.includes(char)) {
-                good = false;
-                break;
-            }
+        if (includeIndex) {
+            (results as LetterIndex[]).push([value, index]);
+        } else {
+            (results as string[]).push(value);
         }
+    });
 
-        if (!good) {
-            continue;
-        }
+    return results;
+}
 
-        for (const [char, index] of correctLetters) {
-            if (word[index] !== char) {
-                good = false;
-                break;
-            }
-        }
+// --- Get letters from all sections ---
+function getLetters() {
+    const correctInputs = getInputsFromFieldset("correct-fieldset");
+    const validInputs = getInputsFromFieldset("valid-fieldset");
+    const invalidInputs = getInputsFromFieldset("invalid-fieldset");
 
-        if (!good) {
-            continue;
-        }
+    const correctLetters = extractLetters(correctInputs) as LetterIndex[];
+    const validLetters = extractLetters(validInputs) as LetterIndex[];
+    const invalidLetters = extractLetters(invalidInputs, false) as string[];
 
-        for (const [char, index] of validLetters) {
-            if (!word.includes(char)) {
-                good = false;
-                break;
-            }
+    return { correctLetters, validLetters, invalidLetters };
+}
 
-            if (word[index % 5] === char) {
-                good = false;
-                break;
-            }
-        }
+// --- Check if a word is valid ---
+function isValidWord(
+    word: string,
+    correctLetters: LetterIndex[],
+    validLetters: LetterIndex[],
+    invalidLetters: string[]
+): boolean {
+    if (invalidLetters.some(char => word.includes(char))) return false;
+    if (correctLetters.some(([char, index]) => word[index] !== char)) return false;
 
-        if (!good) {
-            continue;
-        }
-
-        answers.push(word);
+    for (const [char, index] of validLetters) {
+        if (!word.includes(char)) return false;
+        if (word[index % 5] === char) return false;
     }
 
-    // Set the word list
-    const wordList = document.getElementById("word-list")!;
+    return true;
+}
 
+// --- Main: get answers and display ---
+function getAnswers() {
+    const { correctLetters, validLetters, invalidLetters } = getLetters();
+    const useValidWords = (document.getElementById("use-valid-words") as HTMLInputElement)?.checked ?? false;
+
+    const wordsToCheck = useValidWords ? allAnswers : allWords;
+    const answers = wordsToCheck.filter(word =>
+        isValidWord(word, correctLetters, validLetters, invalidLetters)
+    );
+
+    displayWordList(answers);
+}
+
+// --- Display the word list ---
+function displayWordList(words: string[]) {
+    const wordList = document.getElementById("word-list")!;
     wordList.innerHTML = "";
-    answers.forEach(word => {
-        const wordElement = document.createElement("span");
-        wordElement.className = "word";
-        wordElement.textContent = word;
-        wordList.appendChild(wordElement);
+
+    words.forEach(word => {
+        const span = document.createElement("span");
+        span.className = "word";
+        span.textContent = word;
+        wordList.appendChild(span);
     });
 }
 
-const answerButtonInput = document.getElementById("answer-button")
-
-if (answerButtonInput) {
-    answerButtonInput.addEventListener("click", getAnswers)
-}
+// --- Event listeners ---
+document.getElementById("search-button")?.addEventListener("click", getAnswers);
 
 document.addEventListener("keypress", (event: KeyboardEvent) => {
-    if (event.key === "Enter") {
-        getAnswers();
-    }
-})
+    if (event.key === "Enter") getAnswers();
+});
