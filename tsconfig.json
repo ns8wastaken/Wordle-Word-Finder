@@ -5,7 +5,7 @@
         "module": "ES2022",
         "moduleResolution": "node",
 
-        "outDir": "./src/js",
+        "outDir": "build/js",
         "pretty": true,
 
         "esModuleInterop": true,
