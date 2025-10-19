@@ -11,7 +11,7 @@ fi
 
 # Build project
 echo "Building project..."
-tsc
+tsc --outDir build/js
 cp src/index.html build/
 cp src/styles.css build/
 
