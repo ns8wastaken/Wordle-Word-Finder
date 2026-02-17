@@ -2,7 +2,6 @@ export function checkWordLength(
     wordLengthInput: HTMLInputElement | null,
     extraOptions: HTMLElement | null
 ) {
-    // Check if both elements actually exist before doing anything
     if (wordLengthInput && extraOptions) {
         if (Number(wordLengthInput.value) === 5) {
             extraOptions.classList.remove("hidden");

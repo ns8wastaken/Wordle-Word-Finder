@@ -13,7 +13,7 @@ type Flags = [
     useWordleUnofficialWords: boolean
 ];
 
-let flags: Flags = [true, false, false, false];
+let flags: Flags = [false, false, false, false];
 
 // Mapping bits to their respective loader functions
 const WORD_SOURCES = [

@@ -72,19 +72,24 @@ legend {
 .letter-row input {
     width: 3.5rem;
     height: 3.5rem;
-    font-size: 2rem;
-    text-align: center;
+    color: #070707;
     border: 3px solid #000;
     border-radius: 10px;
+    font-size: 2rem;
+    text-align: center;
     text-transform: uppercase;
     cursor: pointer;
     transition: background-color 250ms;
-    color: #070707;
+    caret-color: transparent;
 }
 
 .letter-row input:focus {
     outline: none;
     background-color: #d4d4d4;
+}
+
+.letter-row input::selection {
+    background-color: transparent;
 }
 
 /* --- Controls & Buttons --- */

@@ -3,9 +3,23 @@ export function setupInputNavigation(container: HTMLElement) {
         Array.from(row.querySelectorAll<HTMLInputElement>("input[type='text']"));
 
     function focusInput(inputs: HTMLInputElement[], index: number) {
-        inputs[index]?.focus();
-        inputs[index]?.select();
+        const target = inputs[index];
+        if (target) {
+            target.focus();
+            target.select();
+        }
     }
+
+    container.addEventListener("focusin", (event: FocusEvent) => {
+        const input = event.target as HTMLInputElement;
+        input.select();
+    });
+
+    container.addEventListener("mousedown", (event: MouseEvent) => {
+        const input = event.target as HTMLInputElement;
+        event.preventDefault();
+        input.select();
+    });
 
     container.addEventListener("keydown", (event: KeyboardEvent) => {
         const input = event.target as HTMLInputElement;
@@ -18,7 +32,6 @@ export function setupInputNavigation(container: HTMLElement) {
         switch (event.key) {
             case "Backspace": {
                 if (input.value === "" && colIndex === 0) {
-                    // Jump to the end of the PREVIOUS row
                     const prevRow = currentRow.previousElementSibling as HTMLElement;
                     if (prevRow?.classList.contains("letter-row")) {
                         const prevInputs = getInputsInRow(prevRow);
@@ -49,6 +62,7 @@ export function setupInputNavigation(container: HTMLElement) {
             }
 
             case "ArrowLeft": {
+                event.preventDefault();
                 if (colIndex > 0) {
                     focusInput(inputs, colIndex - 1);
                 } else {
@@ -62,6 +76,7 @@ export function setupInputNavigation(container: HTMLElement) {
             }
 
             case "ArrowRight": {
+                event.preventDefault();
                 if (colIndex < inputs.length - 1) {
                     focusInput(inputs, colIndex + 1);
                 } else {
@@ -88,7 +103,7 @@ export function setupInputNavigation(container: HTMLElement) {
                 // Next box in same row
                 focusInput(inputs, colIndex + 1);
             } else {
-                // Jump to the first box of the NEXT row
+                // Jump to the first box of the next row
                 const nextRow = currentRow.nextElementSibling as HTMLElement;
                 if (nextRow?.classList.contains("letter-row")) {
                     focusInput(getInputsInRow(nextRow), 0);

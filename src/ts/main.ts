@@ -18,12 +18,10 @@ function setupSettings() {
         dbUnofficial.checked
     );
 
-    // Listen for any changes on the checkboxes
     [dbNormal, dbExtra, dbOfficial, dbUnofficial].forEach(cb => {
         cb.addEventListener("change", updateSettings);
     });
 
-    // Run once on load to initialize the state
     updateSettings();
 }
 
