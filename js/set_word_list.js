@@ -1,9 +1,10 @@
-import { allWords } from "./all_words.js";
-import { allAnswers } from "./all_answers.js";
+import { getWordleOfficialWords, getWordleUnofficialWords } from "./word_loader";
 function setWordList() {
     const wordList = document.getElementById("word-list");
     wordList.innerHTML = "";
-    for (const word of (document.getElementById("use-valid-words").checked ? allAnswers : allWords)) {
+    for (const word of (document.getElementById("use-valid-words").checked
+        ? getWordleOfficialWords()
+        : getWordleUnofficialWords())) {
         const wordElement = document.createElement("span");
         wordElement.className = "word";
         wordElement.textContent = word;
@@ -12,6 +13,4 @@ function setWordList() {
     ;
 }
 setWordList();
-document.getElementById("use-valid-words").addEventListener("click", event => {
-    setWordList();
-});
+document.getElementById("use-valid-words").addEventListener("click", setWordList);

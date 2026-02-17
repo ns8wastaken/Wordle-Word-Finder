@@ -1,6 +1,5 @@
 var _a;
-import { allWords } from "./all_words.js";
-import { allAnswers } from "./all_answers.js";
+import { getWordleOfficialWords, getWordleUnofficialWords } from "./word_loader";
 // --- Helper: get all inputs inside a fieldset's .letter-row ---
 function getInputsFromFieldset(fieldsetId) {
     const fieldset = document.getElementById(fieldsetId);
@@ -57,7 +56,7 @@ function getAnswers() {
     var _a, _b;
     const { correctLetters, validLetters, invalidLetters } = getLetters();
     const useValidWords = (_b = (_a = document.getElementById("use-valid-words")) === null || _a === void 0 ? void 0 : _a.checked) !== null && _b !== void 0 ? _b : false;
-    const wordsToCheck = useValidWords ? allAnswers : allWords;
+    const wordsToCheck = useValidWords ? getWordleOfficialWords() : getWordleUnofficialWords();
     const answers = wordsToCheck.filter(word => isValidWord(word, correctLetters, validLetters, invalidLetters));
     displayWordList(answers);
 }
