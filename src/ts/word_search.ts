@@ -1,17 +1,18 @@
-import { loadAllWords, getWordleOfficialWords, getWordleUnofficialWords } from "./word_loader.js";
+import { getActiveWords } from "./active_words.js";
+import { renderWords } from "./init_word_list.js";
 
 type LetterIndex = [string, number];
 
-// --- Helper: get all inputs inside a fieldset's .letter-row ---
 function getInputsFromFieldset(fieldsetId: string): HTMLInputElement[] {
     const fieldset = document.getElementById(fieldsetId);
     if (!fieldset) return [];
-    const row = fieldset.querySelector<HTMLDivElement>(".letter-row");
-    if (!row) return [];
-    return Array.from(row.querySelectorAll<HTMLInputElement>("input.letter-input"));
+
+    const container = fieldset.querySelector(".container");
+    const searchArea = container || fieldset;
+
+    return Array.from(searchArea.querySelectorAll<HTMLInputElement>("input[type='text']"));
 }
 
-// --- Extract letters from inputs ---
 function extractLetters(inputs: HTMLInputElement[], includeIndex = true): LetterIndex[] | string[] {
     const results: LetterIndex[] | string[] = [];
 
@@ -30,11 +31,14 @@ function extractLetters(inputs: HTMLInputElement[], includeIndex = true): Letter
     return results;
 }
 
-// --- Get letters from all sections ---
-function getLetters() {
-    const correctInputs = getInputsFromFieldset("correct-fieldset");
-    const validInputs = getInputsFromFieldset("valid-fieldset");
-    const invalidInputs = getInputsFromFieldset("invalid-fieldset");
+function getLetters(): {
+    correctLetters: LetterIndex[];
+    validLetters: LetterIndex[];
+    invalidLetters: string[];
+} {
+    const correctInputs = getInputsFromFieldset("correct");
+    const validInputs = getInputsFromFieldset("valid");
+    const invalidInputs = getInputsFromFieldset("invalid");
 
     const correctLetters = extractLetters(correctInputs) as LetterIndex[];
     const validLetters = extractLetters(validInputs) as LetterIndex[];
@@ -43,7 +47,6 @@ function getLetters() {
     return { correctLetters, validLetters, invalidLetters };
 }
 
-// --- Check if a word is valid ---
 function isValidWord(
     word: string,
     correctLetters: LetterIndex[],
@@ -61,37 +64,11 @@ function isValidWord(
     return true;
 }
 
-// --- Main: get answers and display ---
-async function getAnswers() {
-    await loadAllWords();
-
+export async function getAnswers() {
     const { correctLetters, validLetters, invalidLetters } = getLetters();
-    const useValidWords = (document.getElementById("use-valid-words") as HTMLInputElement)?.checked ?? false;
-
-    const wordsToCheck = useValidWords ? getWordleOfficialWords() : getWordleUnofficialWords();
-    const answers = wordsToCheck.filter(word =>
+    const answers = (await getActiveWords()).filter(word =>
         isValidWord(word, correctLetters, validLetters, invalidLetters)
     );
 
-    displayWordList(answers);
+    renderWords(answers);
 }
-
-// --- Display the word list ---
-function displayWordList(words: string[]) {
-    const wordList = document.getElementById("word-list")!;
-    wordList.innerHTML = "";
-
-    words.forEach(word => {
-        const span = document.createElement("span");
-        span.className = "word";
-        span.textContent = word;
-        wordList.appendChild(span);
-    });
-}
-
-// --- Event listeners ---
-document.getElementById("search-button")?.addEventListener("click", getAnswers);
-
-document.addEventListener("keypress", (event: KeyboardEvent) => {
-    if (event.key === "Enter") getAnswers();
-});

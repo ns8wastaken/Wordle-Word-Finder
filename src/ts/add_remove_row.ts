@@ -1,39 +1,44 @@
-// Function to handle a fieldset (Valid or Invalid)
-function setupRowControls(fieldsetId: string) {
+function createLetterInput(): HTMLInputElement {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.maxLength = 1;
+    return input;
+}
+
+function addRow(container: Element) {
+    const rowSize = container.firstElementChild!.children.length;
+
+    const div = document.createElement("div");
+    div.className = "letter-row";
+
+    for (let i = 0; i < rowSize; i++) {
+        div.appendChild(createLetterInput());
+    }
+
+    container.appendChild(div);
+}
+
+function removeRow(container: Element) {
+    if (container.children.length <= 1)
+        return;
+    container.lastChild?.remove();
+}
+
+export function setupRowControls(fieldsetId: string) {
     const fieldset = document.getElementById(fieldsetId);
     if (!fieldset) return;
 
-    const container = fieldset.querySelector<HTMLElement>(".letter-row");
-    const addButton = fieldset.querySelector<HTMLInputElement>("input[type='button'][value='+']");
-    const removeButton = fieldset.querySelector<HTMLInputElement>("input[type='button'][value='-']");
+    const container = fieldset.querySelector(".container");
+    if (!container) return;
 
-    if (!container || !addButton || !removeButton) return;
+    const addButton = fieldset.querySelector<HTMLButtonElement>(".add");
+    const removeButton = fieldset.querySelector<HTMLButtonElement>(".remove");
 
-    // Add row
-    addButton.addEventListener("click", () => {
-        // Create 5 new inputs
-        for (let i = 0; i < 5; i++) {
-            const input = document.createElement("input");
-            input.type = "text";
-            input.className = "letter-input";
-            input.maxLength = 1;
-            container.appendChild(input);
-        }
-    });
+    if (!addButton || !removeButton) {
+        console.warn(`Buttons missing in fieldset: ${fieldsetId}`);
+        return;
+    }
 
-    // Remove row
-    removeButton.addEventListener("click", () => {
-        const inputs = container.querySelectorAll<HTMLInputElement>(".letter-input");
-        if (inputs.length > 5) {
-            // Remove last 5 inputs to remove one “row”
-            for (let i = 0; i < 5; i++) {
-                const lastInput = container.lastElementChild as HTMLElement | null;
-                if (lastInput) container.removeChild(lastInput);
-            }
-        }
-    });
+    addButton.addEventListener("click", () => addRow(container));
+    removeButton.addEventListener("click", () => removeRow(container));
 }
-
-// Initialize both sections
-setupRowControls("valid-fieldset");
-setupRowControls("invalid-fieldset");
