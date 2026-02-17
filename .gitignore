@@ -1,3 +1,5 @@
 key.pem
 cert.pem
 build/
+src/assets/wordlists/12dicts/*.txt
+src/assets/wordlists/wordle/*.txt
