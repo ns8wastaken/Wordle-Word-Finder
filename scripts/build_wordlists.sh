@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 python tools/3of6game_parser.py \
     data/3of6game.txt \

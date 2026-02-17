@@ -13,9 +13,9 @@ const wordLists: WordLists = {
 };
 
 const paths: Record<keyof WordLists, string> = {
-    d3of6Normal: "/assets/wordlists/12dicts/normal_words.txt",
-    d3of6Special: "/assets/wordlists/12dicts/special_words.txt",
-    wordleOfficial: "/assets/wordlists/wordle/all_words_official.txt",
+    d3of6Normal:      "/assets/wordlists/12dicts/normal_words.txt",
+    d3of6Special:     "/assets/wordlists/12dicts/special_words.txt",
+    wordleOfficial:   "/assets/wordlists/wordle/all_words_official.txt",
     wordleUnofficial: "/assets/wordlists/wordle/all_words_unofficial.txt"
 };
 

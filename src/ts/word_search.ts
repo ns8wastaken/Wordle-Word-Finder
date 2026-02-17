@@ -1,4 +1,4 @@
-import { getWordleOfficialWords, getWordleUnofficialWords } from "./word_loader";
+import { loadAllWords, getWordleOfficialWords, getWordleUnofficialWords } from "./word_loader.js";
 
 type LetterIndex = [string, number];
 
@@ -16,7 +16,7 @@ function extractLetters(inputs: HTMLInputElement[], includeIndex = true): Letter
     const results: LetterIndex[] | string[] = [];
 
     inputs.forEach((input, index) => {
-        const value = input.value.toUpperCase();
+        const value = input.value.toLowerCase();
         input.value = value; // normalize input
         if (!value) return;
 
@@ -62,7 +62,9 @@ function isValidWord(
 }
 
 // --- Main: get answers and display ---
-function getAnswers() {
+async function getAnswers() {
+    await loadAllWords();
+
     const { correctLetters, validLetters, invalidLetters } = getLetters();
     const useValidWords = (document.getElementById("use-valid-words") as HTMLInputElement)?.checked ?? false;
 
