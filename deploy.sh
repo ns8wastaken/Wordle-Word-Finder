@@ -9,10 +9,10 @@ echo "Deploying to gh-pages..."
 git worktree add .deploy gh-pages 2>/dev/null || true
 
 # remove old files
-rm -r .deploy/*
+rm -rf .deploy/*
 
 # copy new build files
-cp -r build/* .deploy/
+cp -rf build/* .deploy/
 
 # commit and push
 cd .deploy

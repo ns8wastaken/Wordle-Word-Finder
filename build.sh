@@ -2,7 +2,7 @@
 set -e
 
 echo "Cleaning build directory..."
-rm -r build
+rm -rf build
 mkdir -p build/js
 mkdir -p build/assets/wordlists
 
