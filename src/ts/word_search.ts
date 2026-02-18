@@ -1,74 +1,67 @@
 import { getActiveWords } from "./active_words.js";
 import { renderWords } from "./init_word_list.js";
 
-type LetterIndex = [string, number];
+type LetterIndex = { char: string, index: number };
 
-function getInputsFromFieldset(fieldsetId: string): HTMLInputElement[] {
+function getLettersFromFieldset(fieldsetId: string): LetterIndex[] {
     const fieldset = document.getElementById(fieldsetId);
     if (!fieldset) return [];
 
-    const container = fieldset.querySelector(".container");
-    const searchArea = container || fieldset;
+    const results: LetterIndex[] = [];
+    const rows = fieldset.querySelectorAll(".letter-row");
 
-    return Array.from(searchArea.querySelectorAll<HTMLInputElement>("input[type='text']"));
-}
-
-function extractLetters(inputs: HTMLInputElement[], includeIndex = true): LetterIndex[] | string[] {
-    const results: LetterIndex[] | string[] = [];
-
-    inputs.forEach((input, index) => {
-        const value = input.value.toLowerCase();
-        input.value = value; // normalize input
-        if (!value) return;
-
-        if (includeIndex) {
-            (results as LetterIndex[]).push([value, index]);
-        } else {
-            (results as string[]).push(value);
-        }
+    rows.forEach(row => {
+        const inputs = row.querySelectorAll<HTMLInputElement>("input[type='text']");
+        inputs.forEach((input, index) => {
+            const val = input.value.toLowerCase().trim();
+            if (val) {
+                results.push({ char: val, index: index });
+            }
+        });
     });
 
     return results;
 }
 
-function getLetters(): {
-    correctLetters: LetterIndex[];
-    validLetters: LetterIndex[];
-    invalidLetters: string[];
-} {
-    const correctInputs = getInputsFromFieldset("correct");
-    const validInputs = getInputsFromFieldset("valid");
-    const invalidInputs = getInputsFromFieldset("invalid");
-
-    const correctLetters = extractLetters(correctInputs) as LetterIndex[];
-    const validLetters = extractLetters(validInputs) as LetterIndex[];
-    const invalidLetters = extractLetters(invalidInputs, false) as string[];
-
-    return { correctLetters, validLetters, invalidLetters };
-}
-
 function isValidWord(
     word: string,
-    correctLetters: LetterIndex[],
-    validLetters: LetterIndex[],
-    invalidLetters: string[]
+    correct: LetterIndex[],
+    valid: LetterIndex[],
+    invalid: string[]
 ): boolean {
-    if (invalidLetters.some(char => word.includes(char))) return false;
-    if (correctLetters.some(([char, index]) => word[index] !== char)) return false;
+    // Invalid
+    if (invalid.some(char => word.includes(char)))
+        return false;
 
-    for (const [char, index] of validLetters) {
+    // Correct
+    if (correct.some(({ char, index }) => word[index] !== char))
+        return false;
+
+    // Valid
+    for (const { char, index } of valid) {
         if (!word.includes(char)) return false;
-        if (word[index % 5] === char) return false;
+        if (word[index] === char) return false;
     }
 
     return true;
 }
 
 export async function getAnswers() {
-    const { correctLetters, validLetters, invalidLetters } = getLetters();
-    const answers = (await getActiveWords()).filter(word =>
-        isValidWord(word, correctLetters, validLetters, invalidLetters)
-    );
+    const wordLengthInput = document.getElementById("word-length") as HTMLInputElement;
+    const wordLength = Number(wordLengthInput?.value) || 5;
+
+    const correct = getLettersFromFieldset("correct");
+    const valid = getLettersFromFieldset("valid");
+    const invalid = getLettersFromFieldset("invalid").map(item => item.char);
+
+    const allWords = await getActiveWords();
+
+    const answers = allWords.filter(word => {
+        // First filter by length
+        if (word.length !== wordLength) return false;
+        // Then filter by game rules
+        return isValidWord(word, correct, valid, invalid);
+    });
 
     renderWords(answers);
 }

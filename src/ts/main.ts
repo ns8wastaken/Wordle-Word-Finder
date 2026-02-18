@@ -25,6 +25,30 @@ function setupSettings() {
     updateSettings();
 }
 
+function syncAllRows(wordLength: number) {
+    const allRows = document.querySelectorAll(".letter-row");
+
+    allRows.forEach(row => {
+        const currentInputs = row.querySelectorAll("input");
+        const diff = wordLength - currentInputs.length;
+
+        if (diff > 0) {
+            // Add missing inputs
+            for (let i = 0; i < diff; i++) {
+                const input = document.createElement("input");
+                input.type = "text";
+                input.maxLength = 1;
+                row.appendChild(input);
+            }
+        } else if (diff < 0) {
+            // Remove extra inputs from the end
+            for (let i = 0; i < Math.abs(diff); i++) {
+                row.lastElementChild?.remove();
+            }
+        }
+    });
+}
+
 function init() {
     // Input functions
     document
@@ -44,11 +68,16 @@ function init() {
     // Init word list
     initWordList();
 
-    // Show wordle settings
+    // Show wordle settings + sync rows
     const wordLengthInput = document.getElementById("word-length") as HTMLInputElement | null;
+    const wordLength = Number(wordLengthInput?.value);
     const extraOptions = document.getElementById("extra-options");
-    checkWordLength(wordLengthInput, extraOptions);
-    wordLengthInput?.addEventListener("input", () => checkWordLength(wordLengthInput, extraOptions));
+    checkWordLength(wordLength, extraOptions);
+    wordLengthInput?.addEventListener("input", () => {
+        const wordLength = Number(wordLengthInput?.value);
+        syncAllRows(wordLength);
+        checkWordLength(wordLength, extraOptions);
+    });
 
     // Setup wordle settings
     setupSettings();
