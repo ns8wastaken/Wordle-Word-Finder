@@ -13,11 +13,14 @@ const wordLists = {
     wordleOfficial: null,
     wordleUnofficial: null
 };
+const isGitHubPages = window.location.hostname.includes("github.io");
+const repoName = window.location.pathname.split("/")[1];
+const basePath = isGitHubPages ? `/${repoName}/` : "/";
 const paths = {
-    d3of6Normal: "/assets/wordlists/12dicts/normal_words.txt",
-    d3of6Special: "/assets/wordlists/12dicts/special_words.txt",
-    wordleOfficial: "/assets/wordlists/wordle/all_words_official.txt",
-    wordleUnofficial: "/assets/wordlists/wordle/all_words_unofficial.txt"
+    d3of6Normal: `${basePath}assets/wordlists/12dicts/normal_words.txt`,
+    d3of6Special: `${basePath}assets/wordlists/12dicts/special_words.txt`,
+    wordleOfficial: `${basePath}assets/wordlists/wordle/all_words_official.txt`,
+    wordleUnofficial: `${basePath}assets/wordlists/wordle/all_words_unofficial.txt`
 };
 function loadWords(path) {
     return __awaiter(this, void 0, void 0, function* () {
