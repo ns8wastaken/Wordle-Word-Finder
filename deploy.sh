@@ -23,3 +23,5 @@ cd ..
 
 # remove worktree
 rm -r .deploy
+
+git worktree prune
