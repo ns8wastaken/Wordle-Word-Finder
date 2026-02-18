@@ -4,81 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordle Word Finder</title>
-
     <link rel="stylesheet" href="./styles.css">
 </head>
+    <body>
+        <div class="wrapper">
+            <main>
+                <section class="control-box">
+                    <label>
+                        Word Length
+                        <input type="number" id="word-length" value="5" min="1">
+                    </label>
+                </section>
 
-<body>
-    <div class="wrapper">
-        <div class="center-div">
-            <!-- Toggle: Use only valid words -->
-            <section id="use-valid-words-container">
-                <label for="use-valid-words">Use only valid words</label>
-                <label class="switch">
-                    <input type="checkbox" id="use-valid-words">
-                    <span class="slider"></span>
-                </label>
-            </section>
+                <header class="control-box">
+                    <div class="control-row">
+                        <label>
+                            Word database
+                            <input type="checkbox" id="use-word-db">
+                        </label>
+                        <label>
+                            Extra word database
+                            <input type="checkbox" id="use-extra-words-db">
+                        </label>
+                    </div>
+                    <div id="extra-options" class="control-row hidden">
+                        <label>
+                            Official Wordle words
+                            <input type="checkbox" id="use-official-words">
+                        </label>
+                        <label>
+                            Unofficial Wordle words
+                            <input type="checkbox" id="use-unofficial-words">
+                        </label>
+                    </div>
+                </header>
 
-            <!-- Correct letters -->
-            <fieldset class="input-container-fieldset" id="correct-fieldset">
-                <legend class="input-container-legend">Correct</legend>
-                <div class="letter-row">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                </div>
-            </fieldset>
+                <fieldset id="correct">
+                    <legend>Correct</legend>
+                    <div class="container">
+                        <div class="letter-row">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                        </div>
+                    </div>
+                </fieldset>
 
-            <!-- Valid letters -->
-            <fieldset class="input-container-fieldset" id="valid-fieldset">
-                <legend class="input-container-legend">Valid</legend>
-                <div class="letter-row" id="valid-container">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                </div>
-                <div class="row-controls">
-                    <input type="button" value="+" id="add-row">
-                    <input type="button" value="-" id="remove-row">
-                </div>
-            </fieldset>
+                <fieldset id="valid">
+                    <legend>Valid</legend>
+                    <div class="container">
+                        <div class="letter-row">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                        </div>
+                    </div>
+                    <nav>
+                        <button type="button" class="add">+</button>
+                        <button type="button" class="remove">-</button>
+                    </nav>
+                </fieldset>
 
-            <!-- Invalid letters -->
-            <fieldset class="input-container-fieldset" id="invalid-fieldset">
-                <legend class="input-container-legend">Invalid</legend>
-                <div class="letter-row" id="invalid-container">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                    <input type="text" class="letter-input" maxlength="1">
-                </div>
-                <div class="row-controls">
-                    <input type="button" value="+" id="add-row">
-                    <input type="button" value="-" id="remove-row">
-                </div>
-            </fieldset>
+                <fieldset id="invalid">
+                    <legend>Invalid</legend>
+                    <div class="container">
+                        <div class="letter-row">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                            <input type="text" maxlength="1">
+                        </div>
+                    </div>
+                    <nav>
+                        <button type="button" class="add">+</button>
+                        <button type="button" class="remove">-</button>
+                    </nav>
+                </fieldset>
 
-            <!-- Action button -->
-            <input type="button" value="Search Words" id="search-button">
+                <button type="button" id="search-button">Search Words</button>
+            </main>
+
+            <aside>
+                <fieldset>
+                    <legend>List of Possible Words</legend>
+                    <div id="word-list"></div>
+                </fieldset>
+            </aside>
         </div>
 
-        <!-- Word list output -->
-        <fieldset class="word-list-fieldset">
-            <legend class="word-list-legend">List of Possible Words</legend>
-            <div id="word-list"></div>
-        </fieldset>
-    </div>
-
-    <!-- Scripts -->
-    <script src="./js/input_functions.js"></script>
-    <script src="./js/add_remove_row.js"></script>
-    <script type="module" src="./js/set_word_list.js"></script>
-    <script type="module" src="./js/word_search.js"></script>
-</body>
+        <script type="module" src="./js/main.js"></script>
+    </body>
 </html>

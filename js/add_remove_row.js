@@ -1,38 +1,37 @@
-"use strict";
-// Function to handle a fieldset (Valid or Invalid)
-function setupRowControls(fieldsetId) {
+function createLetterInput() {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.maxLength = 1;
+    return input;
+}
+function addRow(container) {
+    const rowSize = container.firstElementChild.children.length;
+    const div = document.createElement("div");
+    div.className = "letter-row";
+    for (let i = 0; i < rowSize; i++) {
+        div.appendChild(createLetterInput());
+    }
+    container.appendChild(div);
+}
+function removeRow(container) {
+    var _a;
+    if (container.children.length <= 1)
+        return;
+    (_a = container.lastChild) === null || _a === void 0 ? void 0 : _a.remove();
+}
+export function setupRowControls(fieldsetId) {
     const fieldset = document.getElementById(fieldsetId);
     if (!fieldset)
         return;
-    const container = fieldset.querySelector(".letter-row");
-    const addButton = fieldset.querySelector("input[type='button'][value='+']");
-    const removeButton = fieldset.querySelector("input[type='button'][value='-']");
-    if (!container || !addButton || !removeButton)
+    const container = fieldset.querySelector(".container");
+    if (!container)
         return;
-    // Add row
-    addButton.addEventListener("click", () => {
-        // Create 5 new inputs
-        for (let i = 0; i < 5; i++) {
-            const input = document.createElement("input");
-            input.type = "text";
-            input.className = "letter-input";
-            input.maxLength = 1;
-            container.appendChild(input);
-        }
-    });
-    // Remove row
-    removeButton.addEventListener("click", () => {
-        const inputs = container.querySelectorAll(".letter-input");
-        if (inputs.length > 5) {
-            // Remove last 5 inputs to remove one “row”
-            for (let i = 0; i < 5; i++) {
-                const lastInput = container.lastElementChild;
-                if (lastInput)
-                    container.removeChild(lastInput);
-            }
-        }
-    });
+    const addButton = fieldset.querySelector(".add");
+    const removeButton = fieldset.querySelector(".remove");
+    if (!addButton || !removeButton) {
+        console.warn(`Buttons missing in fieldset: ${fieldsetId}`);
+        return;
+    }
+    addButton.addEventListener("click", () => addRow(container));
+    removeButton.addEventListener("click", () => removeRow(container));
 }
-// Initialize both sections
-setupRowControls("valid-fieldset");
-setupRowControls("invalid-fieldset");

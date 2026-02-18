@@ -1,138 +1,125 @@
-/* General text and layout */
+/* --- General Layout --- */
 body {
-    font-family: "Times New Roman";
+    font-family: "CQ Mono", serif;
 }
 
 .wrapper {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
+    gap: 20px;
 }
 
-.center-div {
+/* Container for the left-hand controls */
+main > div:first-child {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-bottom: 20px;
 }
 
-/* ------------------------------
-   FIELDSETS
------------------------------- */
-
-.input-container-fieldset {
-    border: 8px solid #000000;
+/* --- Fieldsets & Legends --- */
+.control-box,
+fieldset {
+    border: 8px solid #000;
     border-radius: 20px;
-    padding: 10px;
-    margin: 5px;
-
+    padding: 15px;
+    margin: 10px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-
-    min-width: 0;
-    width: 460px;
+    gap: 15px;
 }
 
-.input-container-legend {
+.control-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+legend {
     font-size: 20px;
     font-weight: bold;
-
-    border: 4px solid #000000;
+    border: 4px solid;
     border-radius: 8px;
-    background-color: white;
-
-    padding: 2px 5px;
+    border-color: inherit;
+    padding: 2px 10px;
 }
 
-/* Each row of letters */
+/* Border colors */
+#correct,
+#correct legend {
+    border-color: #00ff00;
+}
+
+#valid,
+#valid legend {
+    border-color: #ecec00;
+}
+
+#invalid,
+#invalid legend {
+    border-color: #ff0000;
+}
+
+/* --- Inputs & Letter Rows --- */
 .letter-row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    justify-items: center;
-    gap: 10px;
-}
-
-/* + / - buttons */
-.row-controls {
     display: flex;
-    justify-content: center;
     gap: 10px;
 }
 
-#add-row,
-#remove-row {
-    font-size: 2.5rem;
+.letter-row input {
     width: 3.5rem;
     height: 3.5rem;
-    cursor: pointer;
-}
-
-/* Distinct border colors */
-#correct-fieldset {
-    border-color: rgb(0, 255, 0);
-}
-
-#valid-fieldset {
-    border-color: rgb(236, 236, 0);
-}
-
-#invalid-fieldset {
-    border-color: rgb(255, 0, 0);
-}
-
-/* ------------------------------
-   LETTER INPUTS
------------------------------- */
-
-input {
-    font-family: "Times New Roman";
-    border: 3px solid #000000;
+    color: #070707;
+    border: 3px solid #000;
     border-radius: 10px;
-}
-
-.letter-input {
-    width: 3.5rem;
-    height: 3.5rem;
     font-size: 2rem;
     text-align: center;
-
-    transition: background-color 250ms;
-    color: transparent;
-    text-shadow: 0px 0px 0px #070707;
-
-    /* Shows uppercase letter but actual value is lowercase */
     text-transform: uppercase;
     cursor: pointer;
+    transition: background-color 250ms;
+    caret-color: transparent;
 }
 
-.letter-input::selection {
-    background: transparent;
-}
-
-.letter-input:focus {
-    outline: transparent;
+.letter-row input:focus {
+    outline: none;
     background-color: #d4d4d4;
 }
 
-/* ------------------------------
-   BUTTONS
------------------------------- */
+.letter-row input::selection {
+    background-color: transparent;
+}
+
+/* --- Controls & Buttons --- */
+nav {
+    display: flex;
+    gap: 15px;
+}
+
+/* The + and - buttons */
+.add,
+.remove {
+    font-size: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    cursor: pointer;
+    border: 3px solid #000;
+    border-radius: 10px;
+    background: #e4e4e4;
+}
 
 #search-button {
-    width: 20vw;
-    height: 10vh;
-
-    font-size: 2vw;
-
+    width: 300px;
+    height: 80px;
+    font-size: 1.5rem;
+    margin-top: 20px;
     border: 3px solid #00b600;
     background-color: #00ee00;
     border-radius: 12px;
     font-weight: bold;
-}
-
-#search-button:hover {
     cursor: pointer;
 }
 
@@ -140,128 +127,53 @@ input {
     background-color: #00c000;
 }
 
-/* ------------------------------
-   WORD LIST
------------------------------- */
-
-.word-list-fieldset {
-    border: 8px solid #000000;
-    border-radius: 20px;
-
-    padding: 10px;
-    margin: 10px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 0;
-}
-
-.word-list-legend {
-    font-size: 20px;
-    font-weight: bold;
-
-    border: 4px solid #000000;
-    border-radius: 8px;
-    background-color: white;
-
-    padding: 2px 5px;
+/* --- Word List Output --- */
+#output {
+    min-width: 300px;
+    flex: 1;
 }
 
 #word-list {
     font-size: 22px;
-    overflow-y: auto;
-
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-
-    max-width: 60vw;
     gap: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
-.word {
+/* Individual word styling */
+#word-list span {
     padding: 5px 10px;
     background-color: #f0f0f0;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
 
-/* ------------------------------
-   USE VALID WORDS SWITCH
------------------------------- */
+/* .slider { background-color: #4caf50; } */
 
-#use-valid-words-container {
-    border: #000000 solid 3px;
-    border-radius: 0.5em;
-
-    padding: 5px;
-    gap: 10px;
-
-    font-size: 20px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* include borders in sizing math */
-.switch, .slider, .slider:before {
+* {
     box-sizing: border-box;
 }
 
-/* Switch track container */
-.switch {
-    position: relative;
-    width: 1.8em;
-    height: 1em;
-}
-
-/* Hide checkbox input */
-.switch input {
-    display: none;
-}
-
-/* Slider background */
-.slider {
-    border: #000000 solid 2px;
-    position: absolute;
-    cursor: pointer;
-
-    top: 0;
-    left: 0;
-
+/* Horizontal line for the extra options */
+#extra-options hr {
     width: 100%;
-    height: 100%;
-
-    background-color: #cccccc;
-    transition: background-color 400ms;
-    border-radius: 1000px;
+    border: 0;
+    border-top: 2px solid #000;
+    margin: 10px 0;
 }
 
-/* Slider knob */
-.slider:before {
-    border: #000000 solid 1px;
-    position: absolute;
-    content: "";
-
-    height: calc(100% - 4px);
-    width: calc(50% - 4px);
-
-    top: 50%;
-    left: 2px;
-
-    transform: translateY(-50%);
-    background-color: white;
-    transition: transform 400ms;
-    border-radius: 50%;
+.hidden {
+    display: none !important;
 }
 
-/* Checked state */
-input:checked + .slider {
-    background-color: #4caf50;
-}
-
-input:checked + .slider:before {
-    transform: translate(calc(100% + 4px), -50%);
+/* Match length input style to letter inputs */
+#word-length {
+    width: 60px;
+    border: 3px solid #000;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
 }

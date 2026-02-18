@@ -1,51 +1,106 @@
-"use strict";
-function setupInputNavigation(row) {
-    row.addEventListener("keydown", (event) => {
+export function setupInputNavigation(container) {
+    const getInputsInRow = (row) => Array.from(row.querySelectorAll("input[type='text']"));
+    function focusInput(inputs, index) {
+        const target = inputs[index];
+        if (target) {
+            target.focus();
+            target.select();
+        }
+    }
+    container.addEventListener("focusin", (event) => {
         const input = event.target;
-        if (!input.classList.contains("letter-input"))
+        input.select();
+    });
+    container.addEventListener("mousedown", (event) => {
+        const input = event.target;
+        event.preventDefault();
+        input.select();
+    });
+    container.addEventListener("keydown", (event) => {
+        const input = event.target;
+        const currentRow = input.closest(".letter-row");
+        if (!currentRow)
             return;
-        const inputs = Array.from(row.querySelectorAll(".letter-input"));
+        const inputs = getInputsInRow(currentRow);
         const colIndex = inputs.indexOf(input);
         switch (event.key) {
-            case "Backspace":
-                if (input.value === "" && inputs[colIndex - 1]) {
-                    event.preventDefault();
-                    inputs[colIndex - 1].focus();
-                    inputs[colIndex - 1].select();
+            case "Backspace": {
+                if (input.value === "" && colIndex === 0) {
+                    const prevRow = currentRow.previousElementSibling;
+                    if (prevRow === null || prevRow === void 0 ? void 0 : prevRow.classList.contains("letter-row")) {
+                        const prevInputs = getInputsInRow(prevRow);
+                        focusInput(prevInputs, prevInputs.length - 1);
+                    }
+                }
+                else if (input.value === "" && colIndex > 0) {
+                    focusInput(inputs, colIndex - 1);
                 }
                 break;
-            case "ArrowLeft":
-                if (inputs[colIndex - 1]) {
-                    event.preventDefault();
-                    inputs[colIndex - 1].focus();
-                    inputs[colIndex - 1].select();
+            }
+            case "ArrowUp": {
+                event.preventDefault();
+                const prevRow = currentRow.previousElementSibling;
+                if (prevRow === null || prevRow === void 0 ? void 0 : prevRow.classList.contains("letter-row")) {
+                    focusInput(getInputsInRow(prevRow), colIndex);
                 }
                 break;
-            case "ArrowRight":
-                if (inputs[colIndex + 1]) {
-                    event.preventDefault();
-                    inputs[colIndex + 1].focus();
-                    inputs[colIndex + 1].select();
+            }
+            case "ArrowDown": {
+                event.preventDefault();
+                const nextRow = currentRow.nextElementSibling;
+                if (nextRow === null || nextRow === void 0 ? void 0 : nextRow.classList.contains("letter-row")) {
+                    focusInput(getInputsInRow(nextRow), colIndex);
                 }
                 break;
+            }
+            case "ArrowLeft": {
+                event.preventDefault();
+                if (colIndex > 0) {
+                    focusInput(inputs, colIndex - 1);
+                }
+                else {
+                    const prevRow = currentRow.previousElementSibling;
+                    if (prevRow === null || prevRow === void 0 ? void 0 : prevRow.classList.contains("letter-row")) {
+                        const prevInputs = getInputsInRow(prevRow);
+                        focusInput(prevInputs, prevInputs.length - 1);
+                    }
+                }
+                break;
+            }
+            case "ArrowRight": {
+                event.preventDefault();
+                if (colIndex < inputs.length - 1) {
+                    focusInput(inputs, colIndex + 1);
+                }
+                else {
+                    const nextRow = currentRow.nextElementSibling;
+                    if (nextRow === null || nextRow === void 0 ? void 0 : nextRow.classList.contains("letter-row")) {
+                        focusInput(getInputsInRow(nextRow), 0);
+                    }
+                }
+                break;
+            }
         }
     });
-    row.addEventListener("input", (event) => {
+    container.addEventListener("input", (event) => {
         const input = event.target;
-        if (!input.classList.contains("letter-input"))
+        const currentRow = input.closest(".letter-row");
+        if (!currentRow)
             return;
-        const inputs = Array.from(row.querySelectorAll(".letter-input"));
+        const inputs = getInputsInRow(currentRow);
         const colIndex = inputs.indexOf(input);
-        if (input.value.length === input.maxLength && inputs[colIndex + 1]) {
-            inputs[colIndex + 1].focus();
-            inputs[colIndex + 1].select();
+        if (input.value.length >= input.maxLength) {
+            if (colIndex < inputs.length - 1) {
+                // Next box in same row
+                focusInput(inputs, colIndex + 1);
+            }
+            else {
+                // Jump to the first box of the next row
+                const nextRow = currentRow.nextElementSibling;
+                if (nextRow === null || nextRow === void 0 ? void 0 : nextRow.classList.contains("letter-row")) {
+                    focusInput(getInputsInRow(nextRow), 0);
+                }
+            }
         }
-    });
-    row.addEventListener("focusin", (event) => {
-        const input = event.target;
-        if (input.classList.contains("letter-input"))
-            input.select();
     });
 }
-// Initialize once — works for existing and future inputs
-document.querySelectorAll(".letter-row").forEach(setupInputNavigation);
